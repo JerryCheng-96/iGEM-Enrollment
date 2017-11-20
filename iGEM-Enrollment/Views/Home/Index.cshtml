@@ -1,12 +1,43 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "欢迎来到 SCU_China";
 }
 
-<script src="~/lib/angular/angular.min.js"></script>
+<script src="~/lib/angular/angular.js"></script>
 <script src="~/js/site.js"></script>
-<p></p>
 
-<div ng-app="iGEMForm" ng-controller="BasicInfo">
+<style>
+    .col-center-block {
+        float: none;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+    }
+</style>
 
- 
+<div class="container" ng-app="iGEMForm" ng-model="InitInfo" ng-init="initData = {'Name': '', 'StuID': ''};">
+    <div class="col-md-12">
+        <br />
+        <h2>欢迎来到 SCU_China 2018</h2>
+        <p></p>
+        在下面输入你的姓名及学号以继续。
+        <br />
+        <br />
+        <br />
+    </div>
+    <div class="col-md-4">
+        @*{{initData}}*@
+        <form>
+            <div class="form-group">
+                <input class="form-control" id="textName" placeholder="姓名" ng-model="initData.Name">
+            </div>
+            <div class="form-group">
+                <input class="form-control" id="textID" placeholder="学号" ng-model="initData.StuID">
+            </div>
+            <br />
+            <div class="form-group">
+                <button class="btn btn-primary">下一步</button>
+                <button type="reset" class="btn btn-default" ng-click="initData = {'Name': '', 'StuID': ''};">清空</button>
+            </div>
+        </form>
+    </div>
 </div>

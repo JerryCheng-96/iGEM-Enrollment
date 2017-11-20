@@ -1,0 +1,159 @@
+﻿@{
+    ViewData["Title"] = "SCU_China 2018 招新表格填写";
+}
+
+<script src="~/lib/angular/angular.js"></script>
+<script src="~/js/site.js"></script>
+
+<p></p>
+<p></p>
+<p></p>
+<p></p>
+
+<div class="container" ng-app="iGEMForm" ng-controller="TheForm" ng-init="formData = {'IsResearch': 'No', 'EnglishType': 'highSchool', 'Gender': 'M'}">
+    <div class="col-md-6">
+        <h1>
+            SCU_China
+            2018 年招新
+        </h1>
+        <br />
+        <h4><u><b>1. 个人基本信息</b></u></h4>
+        <br />
+        <form>
+            <div class="form-group">
+                <label for="textName">姓名</label>
+                <input class="form-control" id="textName" placeholder="" ng-model="formData.Name">
+            </div>
+            <div class="form-group">
+                <label for="optionsRadios1">性别&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                <br />
+                <div class="radio-inline">
+                    <label>
+                        <input type="radio" name="optionsRadios" id="optionsRadios1"
+                               value="M" ng-model="formData.Gender" checked> 男
+                    </label>
+                </div>
+                <div class="radio-inline">
+                    <label>
+                        <input type="radio" name="optionsRadios" id="optionsRadios2"
+                               value="F" ng-model="formData.Gender"> 女
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="textBirth">出生年月</label>
+                <input class="form-control" id="textBirth" placeholder="YYYY-MM" ng-model="formData.BirthDate">
+            </div>
+            <div class="form-group">
+                <label for="exampleInputFile">照片</label>
+                <input type="file" id="exampleInputFile">
+                <p class="help-block">请上传一张自己的近照。我们接受自拍。文件大小请勿超过1 MB。</p>
+            </div>
+            <div class="form-group">
+                <label for="textPhone">联系电话</label>
+                <input class="form-control" id="textPhone" placeholder="" ng-model="formData.Phone">
+            </div>
+            <div class="form-group">
+                <label for="textEmail">电子邮件</label>
+                <input type="email" class="form-control" id="textEmail" placeholder="someone@example.com" ng-model="formData.Email">
+            </div>
+
+            <br />
+
+            <div class="form-group">
+                <label for="textGrade">年级</label>
+                <input class="form-control" id="textGrade" placeholder="如 “2017”" ng-model="formData.Grade">
+            </div>
+            <div class="form-group">
+                <label for="textID">学号</label>
+                <input class="form-control" id="textID" placeholder="请输入13位学号" ng-model="formData.StuID">
+            </div>
+            <div class="form-group">
+                <label for="textCol">学院</label>
+                <input class="form-control" id="textCol" placeholder="如 “生命科学学院”" ng-model="formData.College">
+            </div>
+            <div class="form-group">
+                <label for="textMajor">专业</label>
+                <input class="form-control" id="textMajor" placeholder="如 “生物科学”" ng-model="formData.Major">
+            </div>
+
+            <br />
+
+            <div class="form-group">
+                <label for="textFrom">生源地</label>
+                <input class="form-control" id="textFrom" placeholder="如 “四川省成都市”" ng-model="formData.From">
+            </div>
+            <div class="form-group">
+                <label for="engRadiosHigh">英语成绩</label>
+                <br />
+                <div class="radio-inline">
+                    <label>
+                        <input type="radio" name="engRadios" id="engRadiosHigh"
+                               value="highSchool" ng-model="formData.EnglishType" checked> 高考英语
+                    </label>
+                </div>
+                <div class="radio-inline">
+                    <label>
+                        <input type="radio" name="engRadios" id="engRadiosFour"
+                               value="cet4" ng-model="formData.EnglishType"> 大学英语四级
+                    </label>
+                </div>
+                <div class="radio-inline">
+                    <label>
+                        <input type="radio" name="engRadios" id="engRadiosSix"
+                               value="cet6" ng-model="formData.EnglishType"> 大学英语六级
+                    </label>
+                </div>
+                <div class="radio-inline">
+                    <label>
+                        <input type="radio" name="engRadios" id="engRadiosTI"
+                               value="toeils" ng-model="formData.EnglishType"> 托福或雅思
+                    </label>
+                </div>
+                <input class="form-control" id="textEng" placeholder="在此填写分数" ng-model="formData.EnglishGrade">
+            </div>
+
+            <br />
+            <h4><u><b>2. 目前已参加的学生组织</b></u></h4>
+            <div class="form-group">
+                <textarea class="form-control" rows="5" placeholder="请按条逐行填写" ng-model="formData.StuUnion"></textarea>
+            </div>
+            <br />
+
+            <h4><u><b>3. 科研经历</b></u></h4>
+            <div class="form-group">
+                <div class="radio-inline">
+                    <label>
+                        <input type="radio" name="ResRadios" id="resRadios1"
+                               value="No" checked ng-model="formData.IsResearch"> 无
+                    </label>
+                </div>
+                <div class="radio-inline">
+                    <label>
+                        <input type="radio" name="ResRadios" id="resRadios2"
+                               value="Yes" ng-model="formData.IsResearch"> 有
+                    </label>
+                </div>
+                <textarea class="form-control" rows="5" placeholder="简述，不超过100字。" ng-model="formData.researchText" ng-show="whetherResearch()"></textarea>
+            </div>
+            <br />
+
+            <h4><u><b>4. 获奖情况</b></u></h4>
+            <div class="form-group">
+                <textarea class="form-control" rows="4" placeholder="最多填写三项。" ng-model="formData.Prizes"></textarea>
+            </div>
+            <br />
+
+            <h4><u><b>5. 个人陈述</b></u></h4>
+            <div class="form-group">
+                <textarea class="form-control" rows="9" placeholder="中英文皆可，不超过150字/词。无需重复已填写的内容。" ng-model="formData.Intro"></textarea>
+            </div>
+            <br />
+
+            <pre>formData = {{formData}}</pre>
+
+            <button type="submit" class="btn btn-primary">提交</button>
+            <button class="btn btn-default">暂存</button>
+        </form>
+    </div>
+</div>

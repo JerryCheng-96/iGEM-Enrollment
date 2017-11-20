@@ -20,6 +20,7 @@ namespace iGEM_Enrollment
         public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>()
+                .UseUrls("http://*:2018", "http://*:5000")
                 .Build();
     }
 }
