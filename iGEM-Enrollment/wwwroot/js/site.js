@@ -7,18 +7,19 @@ app.controller('TheForm', function ($scope) {
     $scope.formData = {};
 
     $scope.whetherResearch = function ($scope) {
-        return this.formData.isResearch == "Yes";
+        return this.formData.IsResearch == "Yes";
     }
 });
 
-app.controller('InitInfo', function ($scope) {
+app.controller('InitInfo', function ($scope, $http) {
 
     $scope.initData = {};
 
-    $scope.clearInputs = function ($scope) {
-        $scope.initData.Name = '';
-        $scope.initData.StuID = '';
-    }
-    
+});
+
+app.controller('BriefInfo', function ($scope) {
+
+    $scope.briefInfo = {};
+
 });
 

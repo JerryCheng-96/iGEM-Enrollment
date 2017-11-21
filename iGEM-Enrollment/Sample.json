@@ -1,0 +1,19 @@
+﻿formData = {
+  "IsResearch": "Yes",
+  "EnglishType": "highSchool",
+  "Gender": "M",
+  "Name": "Name",
+  "BirthDate": "2000-01",
+  "Phone": "12345678900",
+  "Email": "a@b.com",
+  "Grade": "2015",
+  "StuID": "2015141244003",
+  "College": "LSC",
+  "Major": "Major",
+  "From": "From",
+  "EnglishGrade": "100",
+  "StuUnion": "Org",
+  "researchText": "Research",
+  "Prizes": "Prize",
+  "Intro": "Intro"
+}

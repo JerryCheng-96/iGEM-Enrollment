@@ -16,7 +16,6 @@ namespace iGEM_Enrollment.Controllers
             return View();
         }
 
-        [Authorize]
         public IActionResult About()
         {
             ViewData["Message"] = "Your application description page.";
@@ -34,11 +33,6 @@ namespace iGEM_Enrollment.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
-
-        public IActionResult Form()
-        {
-            return View();
         }
     }
 }
