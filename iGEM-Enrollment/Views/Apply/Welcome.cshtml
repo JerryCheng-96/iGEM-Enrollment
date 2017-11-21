@@ -1,0 +1,21 @@
+﻿@{
+    ViewData["Title"] = "欢迎来到 SCU_China";
+}
+
+<script src="~/lib/angular/angular.js"></script>
+<script src="~/js/site.js"></script>
+
+<div class="container" ng-app="iGEMForm">
+    <div class="col-md-12">
+        <br />
+        <h2>欢迎你，@ViewData["initName"]。</h2>
+        <br />
+        <div ng-show="'@ViewData["isExist"]' == 'Yes'">你之前已经提交过申请。输入提交表格后系统生成的特征值来查看、撤回或重新填写表格。</div>
+        <div ng-show="'@ViewData["isExist"]' == 'No'">
+            很高兴见到你！看起来我们刚刚认识。点击下面的按钮来开始你的申请。
+            <br /><br />
+            <button class="btn btn-success">开始新的申请</button>
+        </div>
+        <br />
+    </div>
+</div>

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Runtime.Serialization.Json;
 using System.Linq;
 using System.Threading.Tasks;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 namespace iGEM_Enrollment
 {
     [Serializable]
-    public class ApplicantString
+    public class AppliFormString
     {
         [Display(Name = "StuID")]
         public String stuId { get; set; }
@@ -69,13 +70,22 @@ namespace iGEM_Enrollment
         [Display(Name = "StuId")] public String stuId;
     }
 
-    public class InitData
+    public class User
     {
-        public String name;
-        public int stuId;
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+
+        [Key]
+        public long stuId { get; set; }
+        public String name { get; set; }
+        public String token { get; set; }
     }
 
-    public class Applicant
+    public class UsersData
+    {
+        public List<User> Users { get; set; }
+    }
+
+    public class HoloForm
     {
         public enum GenderEnum { Male, Female }
         public enum EnglishTypeEnum { HighSchool, CET4, CET6, ToeIls }
@@ -91,7 +101,45 @@ namespace iGEM_Enrollment
         public String major { get; set; }
         public String stuFrom { get; set; }
         public EnglishTypeEnum engType { get; set; }
+        public float engGrade { get; set; }
+        public String stuUnionText { get; set; }
+        public bool isResearch { get; set; }
+        public String researchText { get; set; }
+        public String prizeText { get; set; }
+        public String introText { get; set; }
+    }
+
+    public class Applicant
+    {
+        public enum GenderEnum { Male, Female }
+        public enum EnglishTypeEnum { HighSchool, CET4, CET6, ToeIls }
+
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        [Key]
+        public long stuId { get; set; }
+        public String name { get; set; }
+        public DateTime birthDate { get; set; }
+        public String phone { get; set; }
+        public GenderEnum gender { get; set; }
+        public String email { get; set; }
+        public int grade { get; set; }
+        public String college { get; set; }
+        public String major { get; set; }
+        public String stuFrom { get; set; }
+        public EnglishTypeEnum engType { get; set; }
         public int engGrade { get; set; }
+
+        public AppliForm appliForm { get; set; }
+
+    }
+
+    public class AppliForm
+    {
+
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+
+        [Key]
+        public int appliFormId { get; set; }
         public String stuUnionText { get; set; }
         public bool isResearch { get; set; }
         public String researchText { get; set; }

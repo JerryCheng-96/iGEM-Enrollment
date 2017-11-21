@@ -153,7 +153,7 @@
 
             <pre>formData = {{formData}}</pre>
 
-            <button type="submit" class="btn btn-primary">提交</button>
+            <button class="btn btn-primary" ng-click="$http.post('/Apply/SubmitForm/', formData).then();">提交</button>
             <button class="btn btn-default">暂存</button>
         </form>
     </div>
