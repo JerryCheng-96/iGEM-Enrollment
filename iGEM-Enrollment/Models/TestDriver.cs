@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 
 namespace iGEM_Enrollment.Models
 {
@@ -20,7 +21,7 @@ namespace iGEM_Enrollment.Models
             {
                 new AppliForm
                 {
-                    appliFormId = 0,
+                    appliFormId = "0",
                     stuUnionText = "Test1",
                     isResearch = true,
                     introText = "Test1",
@@ -29,7 +30,7 @@ namespace iGEM_Enrollment.Models
                 },
                 new AppliForm
                 {
-                    appliFormId = 1,
+                    appliFormId = "1",
                     stuUnionText = "Test1",
                     isResearch = true,
                     introText = "Test1",
@@ -38,7 +39,7 @@ namespace iGEM_Enrollment.Models
                 },
                 new AppliForm
                 {
-                    appliFormId = 2,
+                    appliFormId = "2",
                     stuUnionText = "Test1",
                     isResearch = true,
                     introText = "Test1",
@@ -47,7 +48,7 @@ namespace iGEM_Enrollment.Models
                 },
                 new AppliForm
                 {
-                    appliFormId = 3,
+                    appliFormId = "3",
                     stuUnionText = "Test1",
                     isResearch = true,
                     introText = "Test1",
@@ -56,7 +57,7 @@ namespace iGEM_Enrollment.Models
                 },
                 new AppliForm
                 {
-                    appliFormId = 4,
+                    appliFormId = "4",
                     stuUnionText = "Test1",
                     isResearch = true,
                     introText = "Test1",
@@ -65,7 +66,7 @@ namespace iGEM_Enrollment.Models
                 },
                 new AppliForm
                 {
-                    appliFormId = 5,
+                    appliFormId = "5",
                     stuUnionText = "Test1",
                     isResearch = true,
                     introText = "Test1",
@@ -74,7 +75,7 @@ namespace iGEM_Enrollment.Models
                 },
                 new AppliForm
                 {
-                    appliFormId = 6,
+                    appliFormId = "6",
                     stuUnionText = "Test1",
                     isResearch = true,
                     introText = "Test1",
@@ -83,7 +84,7 @@ namespace iGEM_Enrollment.Models
                 },
                 new AppliForm
                 {
-                    appliFormId = 7,
+                    appliFormId = "7",
                     stuUnionText = "Test1",
                     isResearch = true,
                     introText = "Test1",
@@ -102,14 +103,14 @@ namespace iGEM_Enrollment.Models
             {
                 new Applicant
                 {
-                    stuId = 2015141244003,
+                    stuId = 2015141244000,
                     appliForm = appliForm[0],
                     birthDate = DateTime.Parse("1996-11"),
                     college = "LSC",
                     email = "a@b.com",
                     engGrade = 80,
-                    engType = Applicant.EnglishTypeEnum.CET4,
-                    gender = Applicant.GenderEnum.Female,
+                    engType = EnglishTypeEnum.CET4,
+                    gender = GenderEnum.Female,
                     grade = 2015,
                     major = "CB",
                     name = "TestName",
@@ -134,6 +135,21 @@ namespace iGEM_Enrollment.Models
             }
             context.SaveChanges();
 
+        }
+
+        public static void TestEncryption()
+        {
+            var passList = new string[100];
+
+            for (int i = 0; i < 100; i++)
+            {
+                passList[i] = Convert.ToBase64String(KeyDerivation.Pbkdf2(
+                    password: "testPassword",
+                    salt: System.Text.Encoding.UTF8.GetBytes("123456"),
+                    prf: KeyDerivationPrf.HMACSHA1,
+                    iterationCount: 10000,
+                    numBytesRequested: 256 / 8));
+            }
         }
     }
 }

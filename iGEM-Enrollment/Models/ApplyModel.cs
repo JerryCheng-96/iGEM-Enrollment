@@ -2,72 +2,45 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.IO;
+using System.Security.Cryptography;
 using System.Runtime.Serialization.Json;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace iGEM_Enrollment
 {
+    public enum GenderEnum { Male, Female }
+    public enum EnglishTypeEnum { HighSchool, CET4, CET6, ToeIls }
+
     [Serializable]
-    public class AppliFormString
+    public class FormString
     {
-        [Display(Name = "StuID")]
         public String stuId { get; set; }
-
-        [Display(Name = "Name")]
         public String name { get; set; }
-
-        [Display(Name = "BirthDate")]
         public String birthDate { get; set; }
-
-        [Display(Name = "Phone")]
         public String phone { get; set; }
-
-        [Display(Name = "Gender")]
         public String gender { get; set; }
-
-        [Display(Name = "Email")]
         public String email { get; set; }
-
-        [Display(Name = "Grade")]
         public String grade { get; set; }
-
-        [Display(Name = "College")]
         public String college { get; set; }
-
-        [Display(Name = "Major")]
         public String major { get; set; }
-
-        [Display(Name = "From")]
         public String stuFrom { get; set; }
-
-        [Display(Name = "EnglishType")]
         public String engType { get; set; }
-
-        [Display(Name = "EnglishGrade")]
         public String engGrade { get; set; }
-
-        [Display(Name = "StuUnion")]
         public String stuUnionText { get; set; }
-
-        [Display(Name = "IsResearch")]
         public String isResearch { get; set; }
-
-        [Display(Name = "researchText")]
         public String researchText { get; set; }
-
-        [Display(Name = "Prizes")]
         public String prizeText { get; set; }
-
-        [Display(Name = "Intro")]
         public String introText { get; set; }
     }
 
-    [Serializable]
-    public class InitDataString
+    public class SavedForm
     {
-        [Display(Name = "Name")] public String name;
-        [Display(Name = "StuId")] public String stuId;
+        public DateTime savedTime;
+        public FormString theForm;
+        public String token;
     }
 
     public class User
@@ -80,17 +53,10 @@ namespace iGEM_Enrollment
         public String token { get; set; }
     }
 
-    public class UsersData
-    {
-        public List<User> Users { get; set; }
-    }
-
     public class HoloForm
     {
-        public enum GenderEnum { Male, Female }
-        public enum EnglishTypeEnum { HighSchool, CET4, CET6, ToeIls }
 
-        public int stuId { get; set; }
+        public long stuId { get; set; }
         public String name { get; set; }
         public DateTime birthDate { get; set; }
         public String phone { get; set; }
@@ -107,14 +73,57 @@ namespace iGEM_Enrollment
         public String researchText { get; set; }
         public String prizeText { get; set; }
         public String introText { get; set; }
+
+        public HoloForm(FormString formString)
+        {
+            stuId = long.Parse(formString.stuId);
+            name = formString.name;
+            birthDate = DateTime.Parse(formString.birthDate);
+            phone = formString.phone;
+            gender = formString.gender == "M" ? GenderEnum.Male : GenderEnum.Female;
+            email = formString.email;
+            grade = int.Parse(formString.grade);
+            college = formString.college;
+            major = formString.major;
+            stuFrom = formString.stuFrom;
+
+            String inputEngType = formString.engType;
+
+            if (inputEngType == "highSchool")
+            {
+                engType = EnglishTypeEnum.HighSchool;
+            }
+            else if (inputEngType == "cet4")
+            {
+                engType = EnglishTypeEnum.CET4;
+            }
+            else if (inputEngType == "cet6")
+            {
+                engType = EnglishTypeEnum.CET6;
+            }
+            else
+            {
+                engType = EnglishTypeEnum.ToeIls;
+            }
+
+            engGrade = float.Parse(formString.engGrade);
+            stuUnionText = formString.stuUnionText;
+            isResearch = formString.isResearch == "Yes";
+            researchText = formString.researchText;
+            prizeText = formString.prizeText;
+            introText = formString.introText;
+        }
+
+        public String ToString()
+        {
+            return stuId + "__" + name + "__" + birthDate + "__" + phone + "__" + gender + "__" + email + "__" + grade + "__" + college + "__" + major + "__" + stuFrom + "__" + engType + "__" + engGrade + "__" + stuUnionText + "__" + isResearch + "__" + researchText + "__" + prizeText + "__" + introText;
+        }
     }
 
     public class Applicant
     {
-        public enum GenderEnum { Male, Female }
-        public enum EnglishTypeEnum { HighSchool, CET4, CET6, ToeIls }
-
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
+
         [Key]
         public long stuId { get; set; }
         public String name { get; set; }
@@ -127,24 +136,55 @@ namespace iGEM_Enrollment
         public String major { get; set; }
         public String stuFrom { get; set; }
         public EnglishTypeEnum engType { get; set; }
-        public int engGrade { get; set; }
+        public float engGrade { get; set; }
 
         public AppliForm appliForm { get; set; }
 
+
+        public Applicant() { }
+
+        public Applicant(HoloForm hf, AppliForm af)
+        {
+            stuId = hf.stuId;
+            name = hf.name;
+            birthDate = hf.birthDate;
+            phone = hf.phone;
+            gender = hf.gender;
+            email = hf.email;
+            grade = hf.grade;
+            college = hf.college;
+            major = hf.major;
+            stuFrom = hf.stuFrom;
+            engType = hf.engType;
+            engGrade = hf.engGrade;
+
+            appliForm = af;
+        }
     }
 
     public class AppliForm
     {
-
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
 
         [Key]
-        public int appliFormId { get; set; }
+        public String appliFormId { get; set; }
         public String stuUnionText { get; set; }
         public bool isResearch { get; set; }
         public String researchText { get; set; }
         public String prizeText { get; set; }
         public String introText { get; set; }
-    }
 
+
+        public AppliForm() { }
+
+        public AppliForm(HoloForm hf)
+        {
+            appliFormId = hf.stuId + "_" + DateTime.Now.ToString("o");
+            stuUnionText = hf.stuUnionText;
+            isResearch = hf.isResearch;
+            researchText = hf.researchText;
+            prizeText = hf.prizeText;
+            introText = hf.introText;
+        }
+    }
 }

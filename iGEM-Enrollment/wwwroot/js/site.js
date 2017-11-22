@@ -2,12 +2,16 @@
 
 var app = angular.module('iGEMForm', []);
 
-app.controller('TheForm', function ($scope) {
+app.controller('TheForm', function ($scope, $http) {
 
     $scope.formData = {};
 
     $scope.whetherResearch = function ($scope) {
-        return this.formData.IsResearch == "Yes";
+        return this.formData.isResearch == "Yes";
+    }
+
+    $scope.submit = function() {
+        $http.post('/Apply/SubmitForm/', $scope.formData).then();
     }
 });
 

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using iGEM_Enrollment.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 
 namespace iGEM_Enrollment.Controllers
 {
@@ -13,6 +14,15 @@ namespace iGEM_Enrollment.Controllers
     {
         public IActionResult Index()
         {
+            if (HttpContext.Session.GetString("savedHashValue") != "")
+            {
+                return Redirect("/Apply/Form");
+            }
+
+            ViewData["nameSession"] = HttpContext.Session.GetString("name");
+            ViewData["idSession"] = HttpContext.Session.GetString("stuId");
+            ViewData["isExistSession"] = HttpContext.Session.GetString("isExist");
+
             return View();
         }
 
