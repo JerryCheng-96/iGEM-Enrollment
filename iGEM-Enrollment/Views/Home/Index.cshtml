@@ -3,6 +3,7 @@
 }
 
 <script src="~/lib/angular/angular.js"></script>
+<script src="~/lib/ng-file-upload/ng-file-upload-all.min.js"></script>
 <script src="~/js/site.js"></script>
 
 <style>
@@ -33,8 +34,12 @@
         </form>
         <a class="btn btn-primary" href="/Apply/Welcome?name={{initData.Name}}&stuId={{initData.StuID}}">下一步</a>
         <button type="reset" class="btn btn-default" ng-click="initData = {'Name': '', 'StuID': ''};">清空</button>
+        <br /><br /><br />
 
-@*        <pre>{{initData}}</pre>*@
-  @*      <pre>@ViewData["nameSession"] , @ViewData["idSession"] , @ViewData["isExistSession"]</pre>*@
+        @*        <pre>{{initData}}</pre>*@
+        @*      <pre>@ViewData["nameSession"] , @ViewData["idSession"] , @ViewData["isExistSession"]</pre>*@
     </div>
+</div>
+<div ng-controller="MyCtrl">
+    <a class="btn" ngf-select="upload($file)">Upload on file select</a>
 </div>
