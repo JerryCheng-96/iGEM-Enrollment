@@ -1,0 +1,92 @@
+﻿
+@{
+    ViewData["Title"] = "ShowForm";
+}
+
+<script src="~/lib/angular/angular.js"></script>
+<script src="~/js/site.js"></script>
+
+<div class="container" ng-app="iGEMForm" ng-controller="TheForm"
+     ng-init="getExistForm('@ViewData["isExist"]', '@ViewData["eHashValue"]')">
+    <div class="col-md-7">
+        <br />
+        <h1>
+            这是你的报名表。 
+        </h1>
+        <br />
+        <table class="table" style="word-break:break-all; word-wrap:break-word;">
+            <colgroup>
+                <col style="width:7.5em">
+            </colgroup>
+            <thead>
+                <tr>
+                    <th style="vertical-align: top"><b>姓名</b></th>
+                    <th style="vertical-align: top">{{formData.name}}</th>
+                </tr>
+                <tr>
+                    <th style="vertical-align: top"><b>性别</b></th>
+                    <th style="vertical-align: top">{{getGenderText(formData.gender)}}</th>
+                </tr>
+                <tr>
+                    <th style="vertical-align: top"><b>出生年月</b></th>
+                    <th style="vertical-align: top">{{formData.birthDate}}</th>
+                </tr>
+                <tr>
+                    <th style="vertical-align: top"><b>联系电话</b></th>
+                    <th style="vertical-align: top">{{formData.phone}}</th>
+                </tr>
+
+                <tr>
+                    <th style="vertical-align: top"><b>电子邮件</b></th>
+                    <th style="vertical-align: top">{{formData.email}}</th>
+                </tr>
+                <tr>
+                    <th style="vertical-align: top"><b>年级</b></th>
+                    <th style="vertical-align: top">{{formData.grade}}</th>
+                </tr>
+                <tr>
+                    <th style="vertical-align: top"><b>学号</b></th>
+                    <th style="vertical-align: top">{{formData.stuId}}</th>
+                </tr>
+                <tr>
+                    <th style="vertical-align: top"><b>学院</b></th>
+                    <th style="vertical-align: top">{{formData.college}}</th>
+                </tr>
+                <tr>
+                    <th style="vertical-align: top"><b>专业</b></th>
+                    <th style="vertical-align: top">{{formData.major}}</th>
+                </tr>
+                <tr>
+                    <th style="vertical-align: top"><b>生源地</b></th>
+                    <th style="vertical-align: top">{{formData.stuFrom}}</th>
+                </tr>
+                <tr>
+                    <th style="vertical-align: top"><b>英语成绩</b></th>
+                    <th style="vertical-align: top">{{getEnglishTypeText(formData.engType)}}，{{formData.engGrade}}</th>
+                </tr>
+
+                <tr>
+                    <th style="vertical-align: top"><b>学生组织</b></th>
+                    <th style="vertical-align: top">{{formData.stuUnionText}}</th>
+                </tr>
+
+                <tr>
+                    <th style="vertical-align: top"><b>科研经历</b></th>
+                    <th style="vertical-align: top">{{formData.researchText}}</th>
+                </tr>
+
+                <tr>
+                    <th style="vertical-align: top"><b>获奖情况</b></th>
+                    <th style="vertical-align: top">{{formData.prizeText}}</th>
+                </tr>
+
+                <tr>
+                    <th style="vertical-align: top"><b>个人陈述</b></th>
+                    <th style="vertical-align: top">{{formData.introText}}</th>
+                </tr>
+        </table>
+        <br />
+        <button class="btn btn-primary" ng-click="submit()">提交</button>
+        <button class="btn btn-default" ng-click="save()">暂存</button>
+    </div>
+</div>

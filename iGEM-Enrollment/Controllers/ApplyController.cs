@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Runtime.Serialization.Json;
@@ -10,30 +11,42 @@ using Microsoft.EntityFrameworkCore;
 using System.Text;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace iGEM_Enrollment.Controllers
 {
     public class ApplyController : Controller
     {
-
-        private List<SavedForm> savedForms = new List<SavedForm>();
-
+        private readonly IMemoryCache _memoryCache;
         private readonly ApplyContext _context;
 
-        public ApplyController(ApplyContext applyContext)
+        public ApplyController(ApplyContext applyContext, IMemoryCache memoryCache)
         {
             _context = applyContext;
+            _memoryCache = memoryCache;
+        }
+
+        public IActionResult ShowForm()
+        {
+            if (HttpContext.Session.GetString("eHashValue") != null)
+            {
+                ViewData["isExist"] = "Yes";
+                ViewData["eHashValue"] = HttpContext.Session.GetString("eHashValue");
+            }
+
+            return View();
         }
 
         public IActionResult Form()
         {
-            if (HttpContext.Session.GetString("savedHashValue") != "")
-            {
-                
-            }
-
             ViewData["inputName"] = HttpContext.Session.GetString("name");
             ViewData["inputId"] = HttpContext.Session.GetString("stuId");
+            ViewData["isExistSaved"] = HttpContext.Session.GetString("savedHashValue") == null ? "No" : "Yes";
+
+            if (HttpContext.Session.GetString("name") == null || HttpContext.Session.GetString("stuId") == null)
+            {
+                return Redirect("/");
+            }
 
             return View();
         }
@@ -51,7 +64,7 @@ namespace iGEM_Enrollment.Controllers
         [HttpGet]
         public IActionResult Welcome(String name, String stuId)
         {
-            if (HttpContext.Session.GetString("savedHashValue") != "")
+            if (HttpContext.Session.GetString("savedHashValue") != null)
             {
                 return Redirect("/Apply/Form");
             }
@@ -68,18 +81,58 @@ namespace iGEM_Enrollment.Controllers
             {
                 User theUser = Users.Single(u => (u.stuId == long.Parse(stuId) && u.name == name));
                 ViewData["isExist"] = "Yes";
-                HttpContext.Session.SetString("isExist", "Yes");
             }
-            catch (InvalidOperationException e)
+            catch (Exception e)
             {
                 ViewData["isExist"] = "No";
-                HttpContext.Session.SetString("isExist", "No");
             }
 
             HttpContext.Session.SetString("name", name);
             HttpContext.Session.SetString("stuId", stuId);
 
             return View();
+        }
+
+        [HttpGet]
+        public IActionResult Retrieve(String hashValue)
+        {
+            HttpContext.Session.SetString("eHashValue", hashValue);
+            return Redirect("/Apply/ShowForm/");
+        }
+
+        public async Task<IActionResult> GetExistForm()
+        {
+            var inputName = HttpContext.Session.GetString("name");
+            var inputId = HttpContext.Session.GetString("stuId");
+            var hashValue = HttpContext.Session.GetString("eHashValue");
+
+            List<User> Users = await _context.UserData
+                            .AsNoTracking()
+                            .OrderBy(u => u.stuId)
+                            .ToListAsync();
+
+            List<Applicant> Applicants = await _context.Applicant
+                            .Include(a => a.appliForm)
+                            .AsNoTracking()
+                            .ToListAsync();
+
+            try
+            {
+                Applicant theApplicant = Applicants.Single(u => (u.stuId == long.Parse(inputId) && u.name == inputName));
+                User theUser = Users.Single(u => (u.stuId == long.Parse(inputId) && u.name == inputName && u.token ==
+                                Convert.ToBase64String(KeyDerivation.Pbkdf2(
+                                    password: theApplicant.appliForm.appliFormId,
+                                    salt: Encoding.UTF8.GetBytes(hashValue),
+                                    prf: KeyDerivationPrf.HMACSHA256,
+                                    iterationCount: 10000,
+                                    numBytesRequested: 256 / 8))));
+                return new ObjectResult(new FormString(theApplicant));
+            }
+            catch (Exception e)
+            {
+            }
+
+            return new ObjectResult("");
         }
 
         [HttpPost]
@@ -100,7 +153,7 @@ namespace iGEM_Enrollment.Controllers
                 stuId = holoForm.stuId,
                 token = Convert.ToBase64String(KeyDerivation.Pbkdf2(
                     password: appliForm.appliFormId,
-                    salt: hashBytes,
+                    salt: Encoding.UTF8.GetBytes(hashValue),
                     prf: KeyDerivationPrf.HMACSHA256,
                     iterationCount: 10000,
                     numBytesRequested: 256 / 8))
@@ -110,11 +163,11 @@ namespace iGEM_Enrollment.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    //_context.Add(appliForm);
-                    //_context.Add(applicant);
-                    //_context.Add(user);
-                    //await _context.SaveChangesAsync();
-                    //return new ObjectResult("");
+                    _context.Add(appliForm);
+                    _context.Add(applicant);
+                    _context.Add(user);
+                    await _context.SaveChangesAsync();
+                    return new ObjectResult(hashValue);
                 }
             }
             catch (DbUpdateException /* ex */)
@@ -148,13 +201,45 @@ namespace iGEM_Enrollment.Controllers
                 iterationCount: 10000,
                 numBytesRequested: 256 / 8));
 
-            savedForms.Add(theSavedForm);
+            var possibleRepeatForm = new SavedForm();
+
+            if (!_memoryCache.TryGetValue(hashValue, out possibleRepeatForm))
+            {
+                _memoryCache.Set(hashValue, theSavedForm, TimeSpan.FromMinutes(30));
+            }
 
             HttpContext.Session.SetString("name", theSavedForm.theForm.name);
             HttpContext.Session.SetString("stuId", theSavedForm.theForm.stuId);
             HttpContext.Session.SetString("savedHashValue", hashValue);
-            
+
             return new ObjectResult(hashValue);
+        }
+
+        [HttpGet]
+        public IActionResult GetSavedForm()
+        {
+            var inputName = HttpContext.Session.GetString("name");
+            var inputId = HttpContext.Session.GetString("stuId");
+            var inputSavedHashValue = HttpContext.Session.GetString("savedHashValue");
+            var theSavedForm = new SavedForm();
+
+            if (_memoryCache.TryGetValue(inputSavedHashValue, out theSavedForm))
+            {
+                if (theSavedForm.theForm.name == inputName &&
+                    theSavedForm.theForm.stuId == inputId &&
+                    theSavedForm.token == Convert.ToBase64String(KeyDerivation.Pbkdf2(
+                        password: theSavedForm.savedTime.ToString("o"),
+                        salt: Encoding.UTF8.GetBytes(inputSavedHashValue),
+                        prf: KeyDerivationPrf.HMACSHA256,
+                        iterationCount: 10000,
+                        numBytesRequested: 256 / 8)))
+                {
+                    _memoryCache.Remove(inputSavedHashValue);
+                    return new ObjectResult(theSavedForm.theForm);
+                }
+            }
+
+            return new ObjectResult("");
         }
     }
 }

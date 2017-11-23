@@ -14,7 +14,7 @@ namespace iGEM_Enrollment.Controllers
     {
         public IActionResult Index()
         {
-            if (HttpContext.Session.GetString("savedHashValue") != "")
+            if (HttpContext.Session.GetString("savedHashValue") != null)
             {
                 return Redirect("/Apply/Form");
             }

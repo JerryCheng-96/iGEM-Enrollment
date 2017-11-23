@@ -10,7 +10,8 @@
 <p></p>
 <p></p>
 
-<div class="container" ng-app="iGEMForm" ng-controller="TheForm" ng-init="formData = {'isResearch':'Yes','engType':'highSchool','gender':'M','name':'@ViewData["inputName"]','birthDate':'1996-11','phone':'12345678900','email':'a@c.com','grade':'2017','stuID':'@ViewData["inputId"]','college':'LSC','major':'Major','stuFrom':'CD','engGrade':'100','stuUnionText':'StuUnion','researchText':'Research','prizeText':'Prize','introText':'Intro'}">
+<div class="container" ng-app="iGEMForm" ng-controller="TheForm" 
+     ng-init="init('@ViewData["isExistSaved"]', '@ViewData["inputName"]', '@ViewData["inputId"]')">
     <div class="col-md-6">
         <h1>
             SCU_China
@@ -151,10 +152,10 @@
             </div>
             <br />
 
-            <pre>formData = {{formData}}</pre>
+@*            <pre>formData = {{formData}}</pre>*@
 
             <button class="btn btn-primary" ng-click="submit()">提交</button>
-            <button class="btn btn-default">暂存</button>
+            <button class="btn btn-default" ng-click="save()">暂存</button>
         </form>
     </div>
 </div>
