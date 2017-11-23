@@ -1,4 +1,0 @@
-formData = {"isResearch":"Yes","engType":"highSchool","gender":"M","name":"Name","birthDate":"1996-11","phone":"12345678900","email":"a@c.com","grade":"2017","stuID":"2015141244003","college":"LSC","major":"Major","stuFrom":"CD","engGrade":"100","stuUnionText":"StuUnion","researchText":"Research","prizeText":"Prize","introText":"Intro"}
-
-
-formData = {'isResearch': 'No', 'engType': 'highSchool', 'gender': 'M'}

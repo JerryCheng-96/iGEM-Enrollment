@@ -67,7 +67,7 @@ namespace iGEM_Enrollment.Controllers
                 _context.Applicant.Remove(theApplicant);
                 _context.SaveChanges();
 
-                FileInfo photoFile = new FileInfo(_hosting.WebRootPath + $@"\uploads\photos\{theApplicant.photoFileName}");
+                FileInfo photoFile = new FileInfo(_hosting.WebRootPath + $@"/uploads/photos/{theApplicant.photoFileName}");
 
                 if (photoFile.Exists)
                 {
@@ -76,7 +76,7 @@ namespace iGEM_Enrollment.Controllers
 
                 try
                 {
-                    FileInfo appendixFile = new FileInfo(_hosting.WebRootPath + $@"\uploads\appendices\{theApplicant.appliForm.appendixFileName}");
+                    FileInfo appendixFile = new FileInfo(_hosting.WebRootPath + $@"/uploads/appendices/{theApplicant.appliForm.appendixFileName}");
                     if (appendixFile.Exists)
                     {
                         appendixFile.Delete();
@@ -110,7 +110,7 @@ namespace iGEM_Enrollment.Controllers
             {
                 var file = Request.Form.Files.Single();
                 var hashValue = DateTime.Now.ToFileTimeUtc() + file.FileName.Substring(file.FileName.LastIndexOf('.'));
-                using (FileStream fs = System.IO.File.Create(_hosting.WebRootPath + $@"\cached\{hashValue}"))
+                using (FileStream fs = System.IO.File.Create(_hosting.WebRootPath + $@"/cached/{hashValue}"))
                 {
                     file.CopyTo(fs);
                     fs.Flush();
@@ -250,12 +250,12 @@ namespace iGEM_Enrollment.Controllers
         {
             try
             {
-                FileInfo photoFile = new FileInfo(_hosting.WebRootPath + $@"\cached\{theFormString.photoFileName}");
-                FileInfo appendixFile = new FileInfo(_hosting.WebRootPath + $@"\cached\{theFormString.appendixFileName}");
+                FileInfo photoFile = new FileInfo(_hosting.WebRootPath + $@"/cached/{theFormString.photoFileName}");
+                FileInfo appendixFile = new FileInfo(_hosting.WebRootPath + $@"/cached/{theFormString.appendixFileName}");
 
                 if (photoFile.Exists)
                 {
-                    photoFile.MoveTo(_hosting.WebRootPath + @"\uploads\photos\" + theFormString.photoFileName);
+                    photoFile.MoveTo(_hosting.WebRootPath + @"/uploads/photos/" + theFormString.photoFileName);
                 }
                 else
                 {
@@ -264,7 +264,7 @@ namespace iGEM_Enrollment.Controllers
 
                 if (appendixFile.Exists)
                 {
-                    appendixFile.MoveTo(_hosting.WebRootPath + @"\uploads\appendices\" + theFormString.appendixFileName);
+                    appendixFile.MoveTo(_hosting.WebRootPath + @"/uploads/appendices/" + theFormString.appendixFileName);
                 }
                 else
                 {
