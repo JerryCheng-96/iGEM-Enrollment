@@ -110,16 +110,15 @@ namespace iGEM_Enrollment.Controllers
             {
                 var file = Request.Form.Files.Single();
                 var hashValue = DateTime.Now.ToFileTimeUtc() + file.FileName.Substring(file.FileName.LastIndexOf('.'));
-                using (FileStream fs = System.IO.File.Create(_hosting.WebRootPath + $@"/cached/{hashValue}"))
-                {
-                    file.CopyTo(fs);
-                    fs.Flush();
-                }
+                Console.WriteLine(_hosting.WebRootPath + $@"/cached/{hashValue}");
+                FileStream fs = new FileStream(_hosting.WebRootPath + $@"/cached/{hashValue}", FileMode.Create);
+                file.CopyTo(fs);
+                fs.Flush();
                 return new ObjectResult(hashValue);
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
+                Console.WriteLine(_hosting.WebRootPath);
             }
             return new ObjectResult("");
         }
