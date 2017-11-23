@@ -3,42 +3,58 @@
 var app = angular.module('iGEMForm', []);
 
 app.controller('TheForm',
-    function ($scope, $http) {
+    function ($scope, $http, $window) {
 
         $scope.formData = {};
+        $scope.lastSavedTime = '';
 
         $scope.whetherResearch = function ($scope) {
             return this.formData.isResearch == "Yes";
         }
 
         $scope.submit = function () {
-            $http.post('/Apply/SubmitForm/', $scope.formData).then();
+            $http.post('/Apply/SubmitForm/', $scope.formData)
+                .then(function (result) {
+                    window.location.href = '/Apply/SubmitFormSucceeded/';
+                });
         }
 
         $scope.save = function () {
-            $http.post('/Apply/SaveForm/', $scope.formData).then();
+            $http.post('/Apply/SaveForm/', $scope.formData)
+                .then(function (result) {
+                    $scope.lastSavedTime = result.data;
+                });
         }
 
         $scope.getSaved = function () {
             $http.get('/Apply/GetSavedForm/')
                 .then(function (result) {
-                    $scope.formData = angular.fromJson(result.data);
-                    console.log(result.data);
+                    if (result.data != '') {
+                        $scope.formData = angular.fromJson(result.data);
+                        console.log(result.data);
+                    } else {
+                        $http.get('/Apply/Clear/').then();
+                    }
                 });
         }
 
         $scope.getExistForm = function (isExist, hashValue) {
             if (isExist == 'Yes') {
-                $http.get('/Apply/GetExistForm', {params: hashValue})
+                $http.get('/Apply/GetExistForm', { params: hashValue })
                     .then(function (result) {
-                        $scope.formData = angular.fromJson(result.data);
-                        console.log(result.data);
+                        if (result.data != '') {
+                            $scope.formData = angular.fromJson(result.data);
+                            console.log(result.data);
+                        } else {
+                            window.location.href = '/Apply/Error?errCode=1';
+                        }
                     });
             }
         }
 
         $scope.init = function (isExistSaved, inputName, inputId) {
             console.log(isExistSaved + ', got it!');
+            $scope.lastSavedTime = '';
             if (isExistSaved == 'Yes') {
                 console.log('Got the data!');
                 $scope.getSaved();

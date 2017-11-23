@@ -1,0 +1,21 @@
+﻿
+@{
+    ViewData["Title"] = "申请已经提交";
+}
+<script src="~/lib/angular/angular.js"></script>
+<script src="~/js/site.js"></script>
+
+<div class="container">
+    <div class="col-md-6">
+        <br />
+        <h2>你的申请已经提交。</h2>
+        <br />
+        <p>请将下方显示的申请特征值记录下来，这可以保证除了你（和我们）之外的任何人都无法查看或撤回你的申请。</p>
+        <br />
+        <p style="background-color: blue; color: white; width: 20em; text-align:center">@ViewData["hashValue"]</p>
+        <br />
+        <a class="btn btn-success" href="/Apply/ShowFormByHash?hashValue=@ViewData["hashValue"]">查看申请</a>
+        <a class="btn btn-primary" href="/Apply/Clear/">开始另一个申请</a>
+        <br />
+    </div>
+</div>

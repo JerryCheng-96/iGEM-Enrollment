@@ -10,13 +10,18 @@
 <p></p>
 <p></p>
 
-<div class="container" ng-app="iGEMForm" ng-controller="TheForm" 
+<div class="container" ng-app="iGEMForm" ng-controller="TheForm"
      ng-init="init('@ViewData["isExistSaved"]', '@ViewData["inputName"]', '@ViewData["inputId"]')">
     <div class="col-md-6">
         <h1>
             SCU_China
             2018 年招新
         </h1>
+        <br />
+        <div ng-show="'@ViewData["isExistSaved"]' == 'Yes'" class="alert alert-success" role="alert">
+            我们已经重新载入了你之前暂存的表格。
+            <a href="/Apply/Clear/">清除并重新开始</a>
+        </div>
         <br />
         <h4><u><b>1. 个人基本信息</b></u></h4>
         <br />
@@ -152,10 +157,16 @@
             </div>
             <br />
 
-@*            <pre>formData = {{formData}}</pre>*@
+            @*            <pre>formData = {{formData}}</pre>*@
 
             <button class="btn btn-primary" ng-click="submit()">提交</button>
             <button class="btn btn-default" ng-click="save()">暂存</button>
         </form>
+        <br />
+
+        <div class="alert alert-success" role="alert" ng-show="lastSavedTime != ''">
+            <p>你的表格已经在 {{lastSavedTime}} (CST) 保存。</p>
+            <p>你的数据将在服务器上暂存30分钟。请尽快完成表格并提交。</p>
+        </div>
     </div>
 </div>
