@@ -15,7 +15,7 @@
             <br /><br />
             <input class="form-control" id="textName" placeholder="在此输入你的申请表格的特征值。" ng-model="hashValue">
             <br />
-            <a class="btn btn-primary" href="/Apply/Retrieve?hashValue={{hashValue}}">继续</a>
+            <a class="btn btn-primary" href="/Apply/ShowForm?hashValue={{hashValue}}">继续</a>
         </div>
         <div ng-show="'@ViewData["isExist"]' == 'No'">
             很高兴见到你！看起来我们刚刚认识。点击下面的按钮来开始你的申请。

@@ -78,12 +78,19 @@ namespace iGEM_Enrollment.Controllers
 
         }
 
-        public IActionResult ShowForm()
+        [HttpGet]
+        public IActionResult Test(string test)
         {
-            if (HttpContext.Session.GetString("eHashValue") != null)
+            return new ObjectResult(test);
+        }
+
+        public IActionResult ShowForm(String hashValue)
+        {
+            if (hashValue != null)
             {
                 ViewData["isExist"] = "Yes";
-                ViewData["eHashValue"] = HttpContext.Session.GetString("eHashValue");
+                HttpContext.Session.SetString("eHashValue", hashValue);
+                return View();
             }
 
             return View();
