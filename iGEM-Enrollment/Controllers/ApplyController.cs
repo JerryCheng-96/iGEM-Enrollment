@@ -83,20 +83,24 @@ namespace iGEM_Enrollment.Controllers
         }
 
         [HttpPost]
-        public IActionResult Test()
+        public IActionResult UploadFileToCache()
         {
-            long size = 0;
-            var file = Request.Form.Files.Single();
-            //var filename = ContentDispositionHeaderValue.Parse(file.ContentDisposition.FileName.Trim('"');
-            var filename = file.FileName;
-            filename = _hosting.WebRootPath + $@"\uploads\{filename}";
-            size += file.Length;
-            using (FileStream fs = System.IO.File.Create(filename.ToString()))
+            try
             {
-                file.CopyTo(fs);
-                fs.Flush();
+                var file = Request.Form.Files.Single();
+                var hashValue = DateTime.Now.ToFileTimeUtc() + file.FileName.Substring(file.FileName.LastIndexOf('.'));
+                using (FileStream fs = System.IO.File.Create(_hosting.WebRootPath + $@"\cached\{hashValue}"))
+                {
+                    file.CopyTo(fs);
+                    fs.Flush();
+                }
+                return new ObjectResult(hashValue);
             }
-
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
             return new ObjectResult("");
         }
 
@@ -224,6 +228,35 @@ namespace iGEM_Enrollment.Controllers
         [HttpPost]
         public async Task<IActionResult> SubmitForm([FromBody]FormString theFormString)
         {
+            try
+            {
+                FileInfo photoFile = new FileInfo(_hosting.WebRootPath + $@"\cached\{theFormString.photoFileName}");
+                FileInfo appendixFile = new FileInfo(_hosting.WebRootPath + $@"\cached\{theFormString.appendixFileName}");
+
+                if (photoFile.Exists)
+                {
+                    photoFile.MoveTo(_hosting.WebRootPath + @"\uploads\photos\" + theFormString.photoFileName);
+                }
+                else
+                {
+                    theFormString.photoFileName = "";
+                }
+
+                if (appendixFile.Exists)
+                {
+                    appendixFile.MoveTo(_hosting.WebRootPath + @"\uploads\appendices\" + theFormString.appendixFileName);
+                }
+                else
+                {
+                    theFormString.photoFileName = "";
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+
             var holoForm = new HoloForm(theFormString);
             var appliForm = new AppliForm(holoForm);
             var applicant = new Applicant(holoForm, appliForm);

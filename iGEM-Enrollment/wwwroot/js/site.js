@@ -114,12 +114,19 @@ app.controller('TheForm', ['$scope', '$http', 'Upload', function ($scope, $http,
         }
     };
 
-    $scope.upload = function (file) {
+    $scope.upload = function (file, type) {
         Upload.upload({
-            url: '/Apply/Test/',
+            url: '/Apply/UploadFileToCache/',
             data: { file: file }
         }).then(function (resp) {
             console.log('Success ' + resp.config.data.file.name + 'uploaded. Response: ' + resp.data);
+            if (type == 'photo') {
+                $scope.formData.photoFileName = resp.data;
+                console.log('Photo uploaded.');
+            }else if (type == 'appendix') {
+                $scope.formData.appendixFileName = resp.data;
+                console.log('Appendix uploaded.');
+            }
         }, function (resp) {
             console.log('Error status: ' + resp.status);
         }, function (evt) {
@@ -135,7 +142,7 @@ app.controller('TheForm', ['$scope', '$http', 'Upload', function ($scope, $http,
         return this.formData.isResearch == "Yes";
     }
 
-    $scope.submit = function () {
+    $scope.submitForm = function () {
         $http.post('/Apply/SubmitForm/', $scope.formData)
             .then(function (result) {
                 window.location.href = '/Apply/SubmitFormSucceeded/';
@@ -182,7 +189,7 @@ app.controller('TheForm', ['$scope', '$http', 'Upload', function ($scope, $http,
             console.log('Got the data!');
             $scope.getSaved();
         } else {
-            $scope.formData = { 'isResearch': 'Yes', 'engType': 'highSchool', 'gender': 'M', 'name': inputName, 'birthDate': '1996-11', 'phone': '12345678900', 'email': 'a@c.com', 'grade': '2017', 'stuID': inputId, 'college': 'LSC', 'major': 'Major', 'stuFrom': 'CD', 'engGrade': '100', 'stuUnionText': 'StuUnion', 'researchText': 'Research', 'prizeText': 'Prize', 'introText': 'Intro' }
+            $scope.formData = { 'appendixFileName':'', 'photoFileName':'', 'isResearch': 'Yes', 'engType': 'highSchool', 'gender': 'M', 'name': inputName, 'birthDate': '1996-11', 'phone': '12345678900', 'email': 'a@c.com', 'grade': '2017', 'stuID': inputId, 'college': 'LSC', 'major': 'Major', 'stuFrom': 'CD', 'engGrade': '100', 'stuUnionText': 'StuUnion', 'researchText': 'Research', 'prizeText': 'Prize', 'introText': 'Intro' }
         }
     }
 

@@ -2,6 +2,7 @@
 @{
     ViewData["Title"] = "ShowForm";
 }
+<link rel="stylesheet" href="print.css" media="print" />
 
 <script src="~/lib/angular/angular.js"></script>
 <script src="~/lib/ng-file-upload/ng-file-upload-shim.js"></script>
@@ -12,8 +13,8 @@
      ng-init="getExistForm('@ViewData["isExist"]', '@ViewData["eHashValue"]')">
     <div class="col-md-7">
         <br />
-        <h1>
-            这是你的报名表。 
+        <h1 class="hidden-print">
+            这是你的报名表。
         </h1>
         <br />
         <table class="table" style="word-break:break-all; word-wrap:break-word;">
@@ -21,6 +22,13 @@
                 <col style="width:7.5em">
             </colgroup>
             <thead>
+                <tr ng-hide="formData.photoFileName == ''">
+                    @*{{formData.photoFileName}}*@
+                    <a href="#" class="thumbnail" style="width: 15em;">
+                        <img src="{{'/uploads/photos/' + formData.photoFileName}}"
+                             alt="">
+                    </a>
+                </tr>
                 <tr>
                     <th style="vertical-align: top"><b>姓名</b></th>
                     <th style="vertical-align: top">{{formData.name}}</th>
@@ -88,7 +96,7 @@
                 </tr>
         </table>
         <br />
-        <a class="btn btn-danger" href="/Apply/Delete/">撤回申请</a>
-        <a class="btn btn-default" href="/Apply/Clear/">退出</a>
+        <a class="btn btn-danger hidden-print" href="/Apply/Delete/">撤回申请</a>
+        <a class="btn btn-default hidden-print" href="/Apply/Clear/">退出</a>
     </div>
 </div>
