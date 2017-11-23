@@ -12,6 +12,8 @@ using System.Text;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Net.Http.Headers;
 
 namespace iGEM_Enrollment.Controllers
 {
@@ -19,11 +21,13 @@ namespace iGEM_Enrollment.Controllers
     {
         private readonly IMemoryCache _memoryCache;
         private readonly ApplyContext _context;
+        private readonly IHostingEnvironment _hosting;
 
-        public ApplyController(ApplyContext applyContext, IMemoryCache memoryCache)
+        public ApplyController(ApplyContext applyContext, IMemoryCache memoryCache, IHostingEnvironment env)
         {
             _context = applyContext;
             _memoryCache = memoryCache;
+            _hosting = env;
         }
 
         [HttpGet]
@@ -71,17 +75,29 @@ namespace iGEM_Enrollment.Controllers
         [HttpGet]
         public IActionResult ShowFormByHash(String hashValue)
         {
-            HttpContext.Session.SetString("isExist","Yes");
+            HttpContext.Session.SetString("isExist", "Yes");
             HttpContext.Session.SetString("eHashValue", hashValue);
 
             return RedirectToAction("ShowForm");
 
         }
 
-        [HttpGet]
-        public IActionResult Test(string test)
+        [HttpPost]
+        public IActionResult Test()
         {
-            return new ObjectResult(test);
+            long size = 0;
+            var file = Request.Form.Files.Single();
+            //var filename = ContentDispositionHeaderValue.Parse(file.ContentDisposition.FileName.Trim('"');
+            var filename = file.FileName;
+            filename = _hosting.WebRootPath + $@"\uploads\{filename}";
+            size += file.Length;
+            using (FileStream fs = System.IO.File.Create(filename.ToString()))
+            {
+                file.CopyTo(fs);
+                fs.Flush();
+            }
+
+            return new ObjectResult("");
         }
 
         public IActionResult ShowForm(String hashValue)
