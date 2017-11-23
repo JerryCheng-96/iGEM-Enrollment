@@ -25,7 +25,7 @@
                 <tr ng-hide="formData.photoFileName == ''">
                     @*{{formData.photoFileName}}*@
                     <a href="#" class="thumbnail" style="width: 15em;">
-                        <img src="{{'/uploads/photos/' + formData.photoFileName}}"
+                        <img data-ng-src="{{getFilePath('photo')}}"
                              alt="">
                     </a>
                 </tr>

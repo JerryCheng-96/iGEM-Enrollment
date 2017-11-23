@@ -163,7 +163,7 @@
 
             <div class="form-group">
                 <h5>补充资料</h5>
-                <p class="help-block">请上传你认为需要补充提交的材料（如获奖证书、科研经历证明等）。文件大小不超过5 MB。</p>
+                <p class="help-block">请上传你认为需要补充提交的材料（如获奖证书、科研经历证明等）。</p><p>文件大小不超过5 MB。</p>
                 <a class="btn btn-default" ngf-select="upload($file, 'appendix')">上传补充资料...</a>
                 &nbsp; &nbsp;<span class="glyphicon glyphicon-ok" aria-hidden="true" ng-show="formData.appendixFileName != ''"></span>
             </div>
@@ -179,5 +179,6 @@
             <p>你的表格已经在 {{lastSavedTime}} (CST) 保存。</p>
             <p>你的数据将在服务器上暂存30分钟。请尽快完成表格并提交。</p>
         </div>
+        <pre style="padding: 15px; margin-bottom: 20px; border: 1px solid transparent; border-radius: 4px;color: #a94442; background-color: #f2dede; border-color: #ebccd1;", ng-show="isValid == false">{{errList}}</pre>
     </div>
 </div>

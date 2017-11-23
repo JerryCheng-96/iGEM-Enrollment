@@ -68,16 +68,24 @@ namespace iGEM_Enrollment.Controllers
                 _context.SaveChanges();
 
                 FileInfo photoFile = new FileInfo(_hosting.WebRootPath + $@"\uploads\photos\{theApplicant.photoFileName}");
-                FileInfo appendixFile = new FileInfo(_hosting.WebRootPath + $@"\uploads\appendices\{theApplicant.appliForm.appendixFileName}");
 
                 if (photoFile.Exists)
                 {
                     photoFile.Delete();
                 }
 
-                if (appendixFile.Exists)
+                try
                 {
-                    appendixFile.Delete();
+                    FileInfo appendixFile = new FileInfo(_hosting.WebRootPath + $@"\uploads\appendices\{theApplicant.appliForm.appendixFileName}");
+                    if (appendixFile.Exists)
+                    {
+                        appendixFile.Delete();
+                    }
+
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
                 }
             }
 
@@ -260,7 +268,7 @@ namespace iGEM_Enrollment.Controllers
                 }
                 else
                 {
-                    theFormString.photoFileName = "";
+                    theFormString.appendixFileName = "";
                 }
             }
             catch (Exception e)

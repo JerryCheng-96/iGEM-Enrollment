@@ -15,7 +15,7 @@
     }
 </style>
 
-<div class="container" ng-app="iGEMForm" ng-controller="InitInfo" ng-init="initData = {'Name': '', 'StuID': ''}; test='';">
+<div class="container" ng-app="iGEMForm" ng-controller="InitInfo" ng-init="initData = {'Name': '', 'StuID': ''}; test=''; isValid = true; errList = '';">
     <div class="col-md-12">
         <br />
         <h2>欢迎来到 SCU_China 2018 招新</h2>
@@ -23,7 +23,7 @@
     </div>
     <div class="col-md-4">
         @*{{initData}}*@
-        <form>
+        <form name="theForm">
             <div class="form-group">
                 <input class="form-control" id="textName" placeholder="姓名" ng-model="initData.Name">
             </div>
@@ -32,13 +32,13 @@
             </div>
             <br />
         </form>
-        <a class="btn btn-primary" href="/Apply/Welcome?name={{initData.Name}}&stuId={{initData.StuID}}">下一步</a>
-        <button type="reset" class="btn btn-default" ng-click="initData = {'Name': '', 'StuID': ''};">清空</button>
-        <br /><br /><br />
-
+        <a class="btn btn-primary" ng-click="submitData()">下一步</a>
+        <button type="reset" class="btn btn-default" ng-click="initData = {'Name': '', 'StuID': ''}; isValid = true; errList = '';">清空</button>
+        <br /><br />
+        <div class="alert alert-danger" ng-show="isValid==false">{{errList}}</div>
+        <br />
         @*        <pre>{{initData}}</pre>*@
         @*      <pre>@ViewData["nameSession"] , @ViewData["idSession"] , @ViewData["isExistSession"]</pre>*@
     </div>
 
-    <a class="btn" ngf-select="upload($file)">Upload on file select</a>
 </div>
