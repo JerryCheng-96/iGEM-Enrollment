@@ -94,6 +94,11 @@
                     <th style="vertical-align: top"><b>个人陈述</b></th>
                     <th style="vertical-align: top">{{formData.introText}}</th>
                 </tr>
+                <tr ng-hide="formData.appendixFileName == ''">
+                    <th style="vertical-align: top"><b>附加文件</b></th>
+                    <th style="vertical-align: top"><a href="{{'/uploads/appendices/' + formData.appendixFileName}}">点击下载</a></th>
+                </tr>
+
         </table>
         <br />
         <a class="btn btn-danger hidden-print" href="/Apply/Delete/">撤回申请</a>
