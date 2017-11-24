@@ -43,7 +43,7 @@ namespace iGEM_Enrollment
         {
             stuId = a.stuId.ToString();
             name = a.name;
-            birthDate = a.birthDate.ToString("yyyy-mm");
+            birthDate = a.birthDate.ToString("yyyy-MM");
             phone = a.phone;
             gender = a.gender == GenderEnum.Male ? "M" : "F";
             email = a.email;
