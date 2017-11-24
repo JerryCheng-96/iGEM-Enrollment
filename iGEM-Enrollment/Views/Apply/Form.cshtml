@@ -56,6 +56,7 @@
             <div class="form-group">
                 <label for="exampleInputFile">照片</label>
                 <p class="help-block">请上传一张自己的近照。我们接受自拍。文件大小请勿超过1 MB。</p>
+                <p class="help-block">选择文件后请等待。上传完成后会显示<span class="glyphicon glyphicon-ok" aria-hidden="true"></span></p>
                 <a class="btn btn-default" ngf-select="upload($file, 'photo')">上传图片...</a>
                 &nbsp; &nbsp;<span class="glyphicon glyphicon-ok" aria-hidden="true" ng-show="formData.photoFileName != ''"></span>
             </div>
@@ -164,6 +165,7 @@
             <div class="form-group">
                 <h5>补充资料</h5>
                 <p class="help-block">请上传你认为需要补充提交的材料（如获奖证书、科研经历证明等）。</p><p>文件大小不超过5 MB。</p>
+                <p class="help-block">选择文件后请等待。上传完成后会显示<span class="glyphicon glyphicon-ok" aria-hidden="true"></span></p>
                 <a class="btn btn-default" ngf-select="upload($file, 'appendix')">上传补充资料...</a>
                 &nbsp; &nbsp;<span class="glyphicon glyphicon-ok" aria-hidden="true" ng-show="formData.appendixFileName != ''"></span>
             </div>
