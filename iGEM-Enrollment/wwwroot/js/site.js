@@ -257,7 +257,7 @@ app.controller('TheForm', ['$scope', '$http', 'Upload', function ($scope, $http,
             console.log('Got the data!');
             $scope.getSaved();
         } else {
-            $scope.formData = { 'appendixFileName': '', 'photoFileName': '', 'isResearch': 'Yes', 'engType': 'highSchool', 'gender': 'M', 'name': inputName, 'birthDate': '1996-11', 'phone': '12345678900', 'email': 'a@c.com', 'grade': '2017', 'stuID': inputId, 'college': 'LSC', 'major': 'Major', 'stuFrom': 'CD', 'engGrade': '100', 'stuUnionText': 'StuUnion', 'researchText': 'Research', 'prizeText': 'Prize', 'introText': 'Intro' }
+            $scope.formData = { 'appendixFileName': '', 'photoFileName': '', 'isResearch': 'No', 'engType': '', 'gender': 'M', 'name': inputName, 'birthDate': '', 'phone': '', 'email': '', 'grade': '', 'stuID': inputId, 'college': '', 'major': '', 'stuFrom': '', 'engGrade': '', 'stuUnionText': '', 'researchText': '', 'prizeText': '', 'introText': '' }
         }
     }
 
