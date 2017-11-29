@@ -23,26 +23,8 @@ namespace iGEM_Enrollment.Controllers
             ViewData["idSession"] = HttpContext.Session.GetString("stuId");
             ViewData["isExistSession"] = HttpContext.Session.GetString("isExist");
 
-            return View();
+            return Redirect("/Manage/ApplicantList/");
         }
 
-        public IActionResult About()
-        {
-            ViewData["Message"] = "Your application description page.";
-
-            return View();
-        }
-
-        public IActionResult Contact()
-        {
-            ViewData["Message"] = "Your contact page.";
-
-            return View();
-        }
-
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
     }
 }
