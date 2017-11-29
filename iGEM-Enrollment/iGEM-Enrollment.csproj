@@ -16,6 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Views\Interview\" />
     <Folder Include="wwwroot\uploads\appendices\" />
     <Folder Include="wwwroot\cached\" />
     <Folder Include="wwwroot\uploads\photos\" />

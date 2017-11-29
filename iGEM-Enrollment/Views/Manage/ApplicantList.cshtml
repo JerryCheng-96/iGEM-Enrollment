@@ -1,0 +1,46 @@
+﻿
+@{
+    ViewData["Title"] = "ApplicantList";
+}
+<script src="https://cdn.bootcss.com/angular.js/1.6.6/angular.min.js"></script>
+<script src="~/js/site.js"></script>
+
+<div class="container">
+    <div class="col-md-12">
+        <h2>报名者列表</h2>
+        <br />
+        <table class="table">
+            <tr>
+                <th>姓名</th>
+                <th>学号</th>
+                <th>年级</th>
+                <th>学院</th>
+                <th>专业</th>
+                <th></th>
+            </tr>
+            @foreach (var item in (List<Applicant>)ViewData["List"])
+            {
+                <tr>
+                    <td>
+                        @item.name
+                    </td>
+                    <td>
+                        @item.stuId
+                    </td>
+                    <td>
+                        @item.grade
+                    </td>
+                    <td>
+                        @item.college
+                    </td>
+                    <td>
+                        @item.major
+                    </td>
+                    <td>
+                        <a href="/Manage/ShowForm?stuId=@item.stuId">查看</a>
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+</div>

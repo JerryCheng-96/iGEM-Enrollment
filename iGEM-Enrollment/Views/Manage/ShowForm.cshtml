@@ -1,0 +1,105 @@
+﻿
+@{
+    ViewData["Title"] = "查看报名表";
+}
+
+<script src="https://cdn.bootcss.com/angular.js/1.6.6/angular.min.js"></script>
+<script src="~/lib/ng-file-upload/ng-file-upload-shim.js"></script>
+<script src="~/lib/ng-file-upload/ng-file-upload.js"></script>
+<script src="~/js/site.js"></script>
+
+<div class="container" ng-app="iGEMForm" ng-controller="TheForm"
+     ng-init="getExistForm(@ViewData["stuId"])">
+
+    <div class="col-md-7">
+        <br />
+        <a class="btn btn-default hidden-print" href="/Manage/ApplicantList/">返回</a>
+        <br />
+        <br />
+        <table class="table" style="word-break:break-all; word-wrap:break-word;">
+            <colgroup>
+                <col style="width:7.5em">
+            </colgroup>
+            <thead>
+                <tr ng-hide="formData.photoFileName == ''">
+                    @*{{formData.photoFileName}}*@
+                    <a href="{{getFilePath('photo')}}" class="thumbnail" style="width: 15em;">
+                        <img data-ng-src="{{getFilePath('photo')}}"
+                             alt="">
+                    </a>
+                </tr>
+                <tr>
+                    <th style="vertical-align: top"><b>姓名</b></th>
+                    <th style="vertical-align: top">{{formData.name}}</th>
+                </tr>
+                <tr>
+                    <th style="vertical-align: top"><b>性别</b></th>
+                    <th style="vertical-align: top">{{getGenderText(formData.gender)}}</th>
+                </tr>
+                <tr>
+                    <th style="vertical-align: top"><b>出生年月</b></th>
+                    <th style="vertical-align: top">{{formData.birthDate}}</th>
+                </tr>
+                <tr>
+                    <th style="vertical-align: top"><b>联系电话</b></th>
+                    <th style="vertical-align: top">{{formData.phone}}</th>
+                </tr>
+
+                <tr>
+                    <th style="vertical-align: top"><b>电子邮件</b></th>
+                    <th style="vertical-align: top">{{formData.email}}</th>
+                </tr>
+                <tr>
+                    <th style="vertical-align: top"><b>年级</b></th>
+                    <th style="vertical-align: top">{{formData.grade}}</th>
+                </tr>
+                <tr>
+                    <th style="vertical-align: top"><b>学号</b></th>
+                    <th style="vertical-align: top">{{formData.stuId}}</th>
+                </tr>
+                <tr>
+                    <th style="vertical-align: top"><b>学院</b></th>
+                    <th style="vertical-align: top">{{formData.college}}</th>
+                </tr>
+                <tr>
+                    <th style="vertical-align: top"><b>专业</b></th>
+                    <th style="vertical-align: top">{{formData.major}}</th>
+                </tr>
+                <tr>
+                    <th style="vertical-align: top"><b>生源地</b></th>
+                    <th style="vertical-align: top">{{formData.stuFrom}}</th>
+                </tr>
+                <tr>
+                    <th style="vertical-align: top"><b>英语成绩</b></th>
+                    <th style="vertical-align: top">{{getEnglishTypeText(formData.engType)}}，{{formData.engGrade}}</th>
+                </tr>
+
+                <tr>
+                    <th style="vertical-align: top"><b>学生组织</b></th>
+                    <th style="vertical-align: top">{{formData.stuUnionText}}</th>
+                </tr>
+
+                <tr>
+                    <th style="vertical-align: top"><b>科研经历</b></th>
+                    <th style="vertical-align: top">{{formData.researchText}}</th>
+                </tr>
+
+                <tr>
+                    <th style="vertical-align: top"><b>获奖情况</b></th>
+                    <th style="vertical-align: top">{{formData.prizeText}}</th>
+                </tr>
+
+                <tr>
+                    <th style="vertical-align: top"><b>个人陈述</b></th>
+                    <th style="vertical-align: top">{{formData.introText}}</th>
+                </tr>
+                <tr ng-hide="formData.appendixFileName == ''">
+                    <th style="vertical-align: top"><b>附加文件</b></th>
+                    <th style="vertical-align: top"><a href="{{'/uploads/appendices/' + formData.appendixFileName}}">点击下载</a></th>
+                </tr>
+
+        </table>
+        <br />
+        <a class="btn btn-default hidden-print" href="/Manage/ApplicantList/">返回</a>
+    </div>
+</div>

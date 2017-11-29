@@ -247,7 +247,20 @@ app.controller('TheForm', ['$scope', '$http', 'Upload', function ($scope, $http,
                         window.location.href = '/Apply/Error?errCode=1';
                     }
                 });
+
         }
+    }
+
+    $scope.getExistForm = function (stuId) {
+        $http.get('/Manage/GetApplicant?stuId=' + stuId)
+            .then(function (result) {
+                if (result.data != '') {
+                    $scope.formData = angular.fromJson(result.data);
+                    console.log(result.data);
+                } else {
+                    window.location.href = '/Apply/Error?errCode=1';
+                }
+            });
     }
 
     $scope.init = function (isExistSaved, inputName, inputId) {
@@ -286,9 +299,11 @@ app.controller('TheForm', ['$scope', '$http', 'Upload', function ($scope, $http,
 
     $scope.getFilePath = function (type) {
         if (type == 'photo') {
+            return 'http://112.74.166.136:2018/uploads/photos/' + $scope.formData.photoFileName;
             return '/uploads/photos/' + $scope.formData.photoFileName;
         }
         if (type == 'appendix') {
+            return 'http://112.74.166.136:2018/uploads/appendices/' + $scope.formData.appendixFileName;
             return '/uploads/appendices/' + $scope.formData.appendixFileName;
         }
     }
