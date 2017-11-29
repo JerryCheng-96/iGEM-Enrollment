@@ -13,7 +13,8 @@
 
     <div class="col-md-7">
         <br />
-        <a class="btn btn-default hidden-print" href="/Manage/ApplicantList/">返回</a>
+        <a class="btn btn-default hidden-print" href="/Manage/ApplicantList/">返回列表</a>
+        <a class="btn btn-primary hidden-print" href="/Manage/ShowForm?stuId=@ViewData["stuId"]&inEnum=Yes">下一个</a>
         <br />
         <br />
         <table class="table" style="word-break:break-all; word-wrap:break-word;">
@@ -47,7 +48,7 @@
 
                 <tr>
                     <th style="vertical-align: top"><b>电子邮件</b></th>
-                    <th style="vertical-align: top">{{formData.email}}</th>
+                    <th style="vertical-align: top"><a href="mailto:{{formData.email}}">{{formData.email}}</a></th>
                 </tr>
                 <tr>
                     <th style="vertical-align: top"><b>年级</b></th>
@@ -100,6 +101,7 @@
 
         </table>
         <br />
-        <a class="btn btn-default hidden-print" href="/Manage/ApplicantList/">返回</a>
+        <a class="btn btn-default hidden-print" href="/Manage/ApplicantList/">返回列表</a>
+        <a class="btn btn-primary hidden-print" href="/Manage/ShowForm?stuId=@ViewData["stuId"]&inEnum=Yes">下一个</a>
     </div>
 </div>

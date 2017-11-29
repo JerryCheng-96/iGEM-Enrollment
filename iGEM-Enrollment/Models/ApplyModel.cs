@@ -238,4 +238,10 @@ namespace iGEM_Enrollment
             appendixFileName = hf.appendixFileName;
         }
     }
+
+    public class Interview
+    {
+        public String stuId;
+        public bool time1;
+    }
 }

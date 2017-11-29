@@ -24,6 +24,7 @@ namespace iGEM_Enrollment.Controllers
                 .OrderBy(i => i.grade)
                 .ThenBy(i => i.college)
                 .ThenBy(i => i.major)
+                .ThenBy(i => i.stuId)
                 .ToList();
         }
 
@@ -34,9 +35,18 @@ namespace iGEM_Enrollment.Controllers
             return View();
         }
 
-        public IActionResult ShowForm(String stuId)
+        public IActionResult ShowForm(String stuId, String inEnum)
         {
+            if (inEnum == "Yes")
+            {
+                var index = -1;
+                index = Applicants.FindIndex(i => i.stuId.ToString() == stuId);
+                ViewData["stuId"] = Applicants[index + 1].stuId;
+                return View();
+            }
+
             ViewData["stuId"] = stuId;
+            ViewData["nextIndex"] = 0;
 
             return View();
         }
@@ -54,6 +64,12 @@ namespace iGEM_Enrollment.Controllers
             }
 
             return null;
+        }
+
+        [HttpGet]
+        public IActionResult GetApplicantByIndex(String index)
+        {
+            return new ObjectResult(new FormString(Applicants[int.Parse(index)]));
         }
     }
 }
